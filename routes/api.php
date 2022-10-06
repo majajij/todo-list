@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MyListController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,8 +16,15 @@ use App\Http\Controllers\MyListController;
 |
 */
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-Route::apiResource('my_list', MyListController::class);
+Route::post('login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
+
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::get('logout', [AuthController::class, 'logout']);
+    Route::get('refresh', [AuthController::class, 'refresh']);
+    Route::apiResource('my_list', MyListController::class);
+});
