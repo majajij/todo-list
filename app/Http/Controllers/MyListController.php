@@ -18,7 +18,8 @@ class MyListController extends Controller
         $my_lists = auth()
             ->user()
             ->myLists()
-            ->paginate(3);
+            ->get();
+
         return response()->json(['data' => $my_lists], 200);
     }
 
